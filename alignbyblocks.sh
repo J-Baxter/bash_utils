@@ -2,6 +2,7 @@
 #  130420
 #  J Baxter
 #  preprocessing of fasta files: count, split, align, concatenate
+#  010520 JB create new directory with counter if one already exists
 
 #read file from argument
 INPUTFASTA="$1"
@@ -10,17 +11,33 @@ INPUTFASTA="$1"
 NUMSEQ=$(grep -c '^>' $INPUTFASTA)
 echo "$NUMSEQ sequences in file"
 
-#prepare workind directory - currently cannot operate if directories already present
-#maybe look to test whether $dirname exists - if not continue, if so add suffix integer
+#prepare working directory
 sysdate=$(date +'%d%b%y')
-dirname=$(echo "splitalign$sysdate")
-mkdir $dirname
-mkdir $dirname/splits
-mkdir $dirname/aligned_splits
-mkdir $dirname/result
+propname=$(echo "splitalign_${sysdate}")
 
+#is dirname already a directory?
+if [ -d "${propname}" ]
+then
+  counter=1
+  newname=$(echo "splitalign_${sysdate}_${counter}")
+  while [ -d "${newname}" ]
+  do
+    counter=$((counter+1))
+    newname=$(echo "splitalign_${sysdate}_${counter}")
+  done
+  dirname=$(echo "splitalign_${sysdate}_${counter}")
+else
+  dirname=$(echo "${propname}")
+fi
+
+mkdir $dirname
 cp $INPUTFASTA ./$dirname
 cd ./$dirname
+
+for subdir in splits aligned_splits reults
+do
+  mkdir "$subdir"
+done
 
 #set split level
 if [ $NUMSEQ -le 100 ]
