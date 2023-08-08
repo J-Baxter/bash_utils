@@ -17,4 +17,13 @@ sudo gdebi rstudio-server-2023.06.1-524-amd64.deb
 sudo /bin/bash -c “echo ‘www-address=127.0.0.1’ >> /etc/rstudio/rserver.conf”
 sudo rstudio-server restart
 
-sudo useradd -m -p ‘mkpasswd -m sha-512 PASSWORD` -s /bin/bash admin
+echo 'Please enter a username (\this will be your login for RStudio):'
+read username
+
+echo 'Please enter a password (this will be your password for RStudio):'
+read password
+
+sudo useradd -m -p ‘mkpasswd -m sha-512 $password` -s /bin/bash $username
+
+echo 'user added.'
+echo 'RStudio set-up complete.'
