@@ -26,5 +26,7 @@ read password
 
 sudo useradd -m -p ‘mkpasswd -m sha-512 $password` -s /bin/bash $username
 
+# or directly sudo useradd #username 
+
 echo 'user added.'
 echo 'RStudio set-up complete.'
