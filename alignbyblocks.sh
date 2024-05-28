@@ -34,23 +34,23 @@ mkdir $dirname
 cp $INPUTFASTA ./$dirname
 cd ./$dirname
 
-for subdir in splits aligned_splits reults
+for subdir in splits aligned_splits results
 do
   mkdir "$subdir"
 done
 
 #set split level
-if [ $NUMSEQ -le 100 ]
+if [ $NUMSEQ -le 1000 ]
 then
     echo 'no splits required'
     SPLITLEVEL=$NUMSEQ
-elif [ $NUMSEQ -gt 100 -a $NUMSEQ -lt 300 ]
+elif [ $NUMSEQ -gt 1000 -a $NUMSEQ -lt 3000 ]
 then
     echo 'splitting fasta into 3'
     SPLITLEVEL=$( $NUMSEQ / 3 )
 else
-    echo 'splitting fasta into files of 100 sequences'
-    SPLITLEVEL=100
+    echo 'splitting fasta into files of 1000 sequences'
+    SPLITLEVEL=1000
 fi
 
 #split
